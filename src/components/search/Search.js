@@ -47,7 +47,7 @@ export function Search() {
                     return product
                 }
             }).map((product,index) => {
-                return <Link to={`/products/${product.id}`} onClick={() => clickHandler(product.id)}
+                return <Link to={`/products/${product.slug}`} onClick={() => clickHandler(product.slug)}
                              className='text-black flex items-center max-h-[80px] mb-4 border-b pb-2 last:border-0 last:mb-0 hover:opacity-50 transition'
                              key={index}>
                     <img className='w-[50px] mr-4 max-h-[75px]' src={product.image} alt={product.title}/>

@@ -21,8 +21,10 @@ export function ProductItem({product}) {
         contextId.id = productId
     }
 
+    if(!product) return 'null';
+
     return (
-        <Link to={`/products/${product.id}`} onClick={() => clickHandler(product.id)} className='w-[300px] h-[400px] shadow-md mt-[10px] border relative rounded-lg productItem transition-all duration-300 sm:mr-[5px] sm:ml-[5px]'>
+        <Link to={`/products/${product.slug}`} onClick={() => clickHandler(product.slug)} className='w-[300px] h-[400px] shadow-md mt-[10px] border relative rounded-lg productItem transition-all duration-300 sm:mr-[5px] sm:ml-[5px]'>
             <img className='w-[100px] m-auto mt-[50px]' src={product.image} alt={product.title}/>
             <div className='absolute left-0 right-0 top-[250px] text-center'>{product.title}</div>
             <div className='absolute left-0 right-0 bottom-[45px] flex justify-between items-center'>

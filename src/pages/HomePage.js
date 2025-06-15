@@ -10,12 +10,12 @@ export function HomePage() {
     const {filters, searchFilterProducts} = useSelector(state => state.product)
 
     const filterByCategory = (category) => {
-        return data?.filter(product => product.category === category)
+        return data.results?.filter(product => product.category === category)
             .map(product => <ProductItem product={product} key={product.id} />)
     }
 
     const filterByPrice = price => {
-        const products = data?.filter(item => item.price >= price[0] && item.price <= price[1])
+        const products = data.results?.filter(item => item.price >= price[0] && item.price <= price[1])
             .map(product => <ProductItem product={product} key={product.id} />)
         if (products.length === 0) {
             return <div className='text-center'>
@@ -27,13 +27,13 @@ export function HomePage() {
     }
 
     const filterByRating = rating => {
-        return data?.filter(item => rating === 'above' ? item.rating.rate >= 3 : item.rating.rate <= 3)
+        return data.results?.filter(item => rating === 'above' ? item.rating.rate >= 3 : item.rating.rate <= 3)
             .map(product => <ProductItem product={product} key={product.id} />)
     }
 
     const filterSearch = data => {
-        if (data.length > 0) {
-            return data.map(product => <ProductItem product={product} key={product.id}/>)
+        if (data.results.length > 0) {
+            return data.results.map(product => <ProductItem product={product} key={product.id}/>)
         } else {
             return <p className='mt-[30px] mx-auto'>Products not found...</p>
         }
@@ -45,7 +45,7 @@ export function HomePage() {
         if (filters.rating) return filterByRating(filters.rating)
         if (searchFilterProducts) return filterSearch(searchFilterProducts)
 
-        return data?.map(product => <ProductItem product={product} key={product.id}/>)
+        return data?.results?.map(product => <ProductItem product={product} key={product.id}/>)
     }
 
     return (

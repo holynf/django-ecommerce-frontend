@@ -11,12 +11,8 @@ import {Colors} from "../optionsProduct/Colors"
 import {Sizes} from "../optionsProduct/Sizes"
 import {Brands} from "../optionsProduct/Brands"
 
-export function ProductDetailItem({product, refetch, status}) {
-    const contextId = useContext(Context)
+export function ProductDetailItem({product}) {
     const {cart} = useSelector(state => state.product)
-
-    const {data, isLoading, error} = useGetProductByCategoryQuery(product.category)
-    const filterProductFooter = data?.filter(item => item.id !== product.id)
 
     const isCart = !!cart.find(el => el.id === product.id)
     const dispatch = useDispatch()
@@ -32,24 +28,6 @@ export function ProductDetailItem({product, refetch, status}) {
         return arr.map(star => <FontAwesomeIcon key={star} className='text-yellow-500' icon={faStar} />)
     }
 
-    const optionsProduct = category => {
-        if (category === 'men\'s clothing' || category === 'women\'s clothing') return <Colors />
-        if (category === 'jewelery') return <Sizes />
-        if (category === 'electronics') return <Brands />
-    }
-
-    const clickHandler = (productId) => {
-        contextId.id = productId
-        refetch()
-        if (status === "fulfilled") {
-            const body = document.querySelector('body').getBoundingClientRect().top + window.scrollY
-            window.scroll({
-                top: body,
-                behavior: 'smooth'
-            })
-        }
-    }
-
     return (
         <>
             <div className='px-2 pb-6'>
@@ -58,7 +36,7 @@ export function ProductDetailItem({product, refetch, status}) {
                         Home
                     </Link>
                     <span className='px-2'>\</span>
-                    {product.category}
+                    {product.category.name}
                     <span className='pl-2'>\</span>
                 </p>
                 <div className='flex flex-col justify-center items-center lg:flex lg:flex-row lg:justify-between lg:items-start'>
@@ -71,15 +49,12 @@ export function ProductDetailItem({product, refetch, status}) {
                             <p className='my-4 text-xl sm:text-2xl'>${product.price}</p>
                             <div className='flex justify-start'>
                                 <div className='mr-4'>
-                                    <span className='mr-2 text-base font-semibold'>{product.rating.rate}</span>
-                                    {countStar(product.rating.rate)}
+                                    <span className='mr-2 text-base font-semibold'>{product.average_rating}</span>
+                                    {countStar(product.average_rating)}
                                 </div>
-                                <span className='cursor-pointer text-indigo-600 text-base font-medium hover:text-indigo-500 transition'>{product.rating.count} reviews</span>
+                                <span className='cursor-pointer text-indigo-600 text-base font-medium hover:text-indigo-500 transition'>{product.average_rating} reviews</span>
                             </div>
                             <p className='text-base mt-4 sm:text-lg'>{product.description}</p>
-                            <div className='my-4'>
-                                {optionsProduct(product.category)}
-                            </div>
                             <button
                                 onClick={addProduct}
                                 disabled={isCart}
@@ -94,28 +69,6 @@ export function ProductDetailItem({product, refetch, status}) {
                                 }
                             </button>
                         </div>
-                    </div>
-                </div>
-                <div className='mt-[100px]'>
-                    <p className='text-xl font-medium w-fit border-b-2 border-b-gray-500 mx-auto lg:mx-0'>You may also be interested</p>
-                    <div className={`flex justify-start mt-8 overflow-x-auto lg:overflow-x-hidden ${filterProductFooter?.length > 3 ? 'lg:justify-center' : 'sm:justify-center'}`}>
-                        {error && <div>{error.error}</div>}
-                        {isLoading && <Loader />}
-                        {
-                            filterProductFooter?.map(product => (
-                                <Link to={`/products/${product.id}`}
-                                      onClick={() => clickHandler(product.id)}
-                                      key={product.id}
-                                      className='flex flex-col justify-evenly items-center border mx-1 py-1 rounded-lg shadow-lg productItem'
-                                >
-                                    <img className='w-[100px]' src={product.image} alt={product.title}/>
-                                    <div>
-                                        <p className='w-[200px] text-center'>{product.title}</p>
-                                        <p className='font-medium text-center'>${product.price}</p>
-                                    </div>
-                                </Link>
-                            ))
-                        }
                     </div>
                 </div>
             </div>

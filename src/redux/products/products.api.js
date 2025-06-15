@@ -3,18 +3,18 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 export const productsApi = createApi({
     reducerPath: 'products/api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://fakestoreapi.com'
+        baseUrl: 'http://localhost:8000/api/v1'
     }),
     // refetchOnFocus: true,
     endpoints: build => ({
         getProductsAll: build.query({
             query:() => ({
-                url: '/products'
+                url: '/store/products'
             })
         }),
         getProductById: build.query({
-            query:(id) => ({
-                url: `/products/${id}`
+            query:(slug) => ({
+                url: `/store/products/${slug}`
             })
         }),
         getProductByCategory: build.query({
